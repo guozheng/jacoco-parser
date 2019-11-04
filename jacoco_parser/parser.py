@@ -100,6 +100,7 @@ def get_stats():
     for index in range(4, 12, 2):
         stats[INDEX_MAP[index]] = (results[index], results[index + 1], calc_pct(results[index], results[index + 1]))
 
+    # print(stats)
     return stats
 
 
