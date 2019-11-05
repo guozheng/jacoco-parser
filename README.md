@@ -46,6 +46,11 @@ The script then uses regex to find those `<td>` element values and return a dict
 # Usage
 
 ```shell script
+> python jacoco_parser/parser.py path_to_index.html [path_to_old_index.html]
+```
+
+## Parse and print one coverage report data
+```shell script
 > python jacoco_parser.parser.py index.html
 counter: METHODS - missed: 77, total: 1,489, coverage: 94.8287441236%
 counter: CXTY - missed: 209, total: 2,558, coverage: 91.8295543393%
@@ -55,7 +60,22 @@ counter: CLASSES - missed: 15, total: 289, coverage: 94.8096885813%
 counter: BRANCH - missed: 141, total: 2,074, coverage: 93.2015429122%
 ```
 
-`get_stats` returns the coverage data summary in the dictionary:
+## Compare and print two coverage reports difference
+```shell script
+> python jacoco_parser.parser.py index.html index_old.html
+counter: METHODS - missed: 77, total: 1,489, coverage: 94.8287441236%, change: 1.25684220177%
+counter: CXTY - missed: 209, total: 2,558, coverage: 91.8295543393%, change: 0.132672540923%
+counter: INSTRUCTION - missed: 1,323, total: 26,881, coverage: 95.0783080987%, change: 1.73620956318%
+counter: LINES - missed: 328, total: 6,228, coverage: 94.7334617855%, change: 0.303244115831%
+counter: CLASSES - missed: 15, total: 289, coverage: 94.8096885813%, change: 0.974072142959%
+counter: BRANCH - missed: 141, total: 2,074, coverage: 93.2015429122%, change: 2.19400995556%
+```
+
+# Methods
+
+`get_stats` returns the coverage data summary in a dictionary:
 ```python
 {'METHODS': ('77', '1,489', 94.82874412357287), 'CXTY': ('209', '2,558', 91.8295543393276), 'INSTRUCTION': ('1,323', '26,881', 95.07830809865705), 'LINES': ('328', '6,228', 94.7334617854849), 'CLASSES': ('15', '289', 94.80968858131487), 'BRANCH': ('141', '2,074', 93.20154291224686)}
 ```
+
+`diff_stats` returns the coverage data difference in a dictionary.

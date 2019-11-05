@@ -49,19 +49,13 @@ INDEX_MAP = {
 }
 
 
-def get_stats():
+def get_stats(path):
     """
 
     :return: a dictionary, key is the coverage counter name, value is a tuple of (missed, total, coverage_pct)
     """
     stats = {}
 
-    if len(sys.argv) < 2:
-        print("Missing the required path to jacoco report index.html")
-        print("Usage: python jacoco_parser/parser.py path_to_index.html")
-        return stats
-
-    path = sys.argv[1]
     if not os.path.isfile(path):
         print "Given file path {} does not exist, exit program".format(path)
         return stats
@@ -127,6 +121,25 @@ def calc_pct(missed, total):
     return 100.0 - float(missed.replace(',', '')) / float(total.replace(',', '')) * 100.0
 
 
+def diff_stats(path, old_path):
+    """Calculate coverage stats difference between a current report and an old report.
+
+    :param path: path to the current report index.html
+    :param old_path: path to the old report index.html
+    :return: a dictionary for coverage data differences, key is the counter name, value is a tuple with four values:
+        current miss count, current total count, current coverage percentage, increase or drop from old coverage percentage
+    """
+    stats = get_stats(path)
+    old_stats = get_stats(old_path)
+
+    diff_stats = {}
+
+    for counter, values in stats.items():
+        diff_stats[counter] = (values[0], values[1], values[2], values[2] - old_stats[counter][2])
+
+    return diff_stats
+
+
 def print_stats(stats):
     """Pretty print the final coverage stats.
 
@@ -137,5 +150,23 @@ def print_stats(stats):
         print "counter: {} - missed: {}, total: {}, coverage: {}%".format(counter, values[0], values[1], values[2])
 
 
+def print_diff_stats(diff_stats):
+    """Pretty print the coverage stats differences.
+
+    :param diff_stats: a dictionary containing coverage diff
+    """
+    for counter, values in diff_stats.items():
+        print "counter: {} - missed: {}, total: {}, coverage: {}%, change: {}%".format(counter, values[0], values[1],
+                                                                                       values[2], values[3])
+
+
 if __name__ == "__main__":
-    print_stats(get_stats())
+    arg_count = len(sys.argv)
+    if arg_count < 2:
+        print("Missing the required path to jacoco report index.html")
+        print("Usage: python jacoco_parser/parser.py path_to_index.html [path_to_old_index.html]")
+        sys.exit(1)
+    elif arg_count == 2:
+        print_stats(get_stats(sys.argv[1]))
+    else:
+        print_diff_stats(diff_stats(sys.argv[1], sys.argv[2]))
