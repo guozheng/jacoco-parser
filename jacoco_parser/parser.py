@@ -57,7 +57,7 @@ def get_stats(path):
     stats = {}
 
     if not os.path.isfile(path):
-        print "Given file path {} does not exist, exit program".format(path)
+        print("Given file path {} does not exist, exit program".format(path))
         return stats
 
     # ideally the report is already in one line, we combine it into one line just in case
@@ -147,7 +147,7 @@ def print_stats(stats):
     :return:
     """
     for counter, values in stats.items():
-        print "counter: {} - missed: {}, total: {}, coverage: {}%".format(counter, values[0], values[1], values[2])
+        print("counter: {} - missed: {}, total: {}, coverage: {}%".format(counter, values[0], values[1], values[2]))
 
 
 def print_diff_stats(diff_stats):
@@ -156,8 +156,8 @@ def print_diff_stats(diff_stats):
     :param diff_stats: a dictionary containing coverage diff
     """
     for counter, values in diff_stats.items():
-        print "counter: {} - missed: {}, total: {}, coverage: {}%, change: {}%".format(counter, values[0], values[1],
-                                                                                       values[2], values[3])
+        print("counter: {} - missed: {}, total: {}, coverage: {}%, change: {}%".format(counter, values[0], values[1],
+                                                                                       values[2], values[3]))
 
 
 if __name__ == "__main__":
